@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skin Editor</title>
+  <link rel="stylesheet" href="../assets/css/skin-editor.css">
+
+  <script type="importmap">
+	{
+	  "imports": {
+		"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+		"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+	  }
+	}
+	</script>
+</head>
+<body>
+  <div id="leftPanel">
+    <canvas id="skinCanvas" width="64" height="64"></canvas>
+    <div id="controls">
+      <div id="toolBar">
+        <button class="toolBtn" data-tool="brush">🖌️ Brush</button>
+        <button class="toolBtn" data-tool="bucket">🪣 Fill</button>
+        <button class="toolBtn" data-tool="picker">🎯 Pick</button>
+      </div>
+      <input type="color" id="colorPicker" value="#ffffff" />
+      <button id="clearBtn">Clear</button>
+      <button id="saveBtn">Save PNG</button>
+      <input type="file" id="loadInput" accept="image/png" style="display:none">
+      <button id="loadBtn">Load PNG</button>
+    </div>
+  </div>
+
+  <div id="rightPanel">
+    <canvas id="preview"></canvas>
+  </div>
+
+  <script type="module" src="../assets/js/skin-editor/skin-editor.js"></script>
+</body>
+</html>

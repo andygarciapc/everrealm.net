@@ -1,0 +1,6 @@
+.vs/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates

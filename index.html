@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EverRealm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', sans-serif;
+	  background-color: #1e1e1e;
+      scroll-behavior: smooth;
+    }
+
+    .hero {
+      background-image: url('assets/images/EverRealm_preview.jpg');
+      height: 100vh;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 700px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p.description {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .links a {
+      color: #58a6ff;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .email-form input[type="email"] {
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem 0 0 0.5rem;
+      width: 250px;
+    }
+
+    .email-form button {
+      padding: 0.75rem 1rem;
+      border: none;
+      background-color: #58a6ff;
+      color: white;
+      border-radius: 0 0.5rem 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .email-form button:hover {
+      background-color: #1f6feb;
+    }
+
+    .content {
+      padding: 4rem 2rem;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+    }
+
+    footer {
+		footer {
+		margin-top: 3rem;
+		font-size: 0.85rem;
+		color: #888;
+		background-color: #1e1e1e; /* <-- Set this explicitly */
+		padding: 1rem 0;
+		text-align: center;
+	}
+
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="overlay">
+      <h1>EverRealm</h1>
+      <p class="description">A medieval voxel RPG where you build kingdoms, conquer cities, and lead armies — one block at a time.</p>
+      <div class="links">
+        <a href="https://x.com/EverRealmGame">Twitter</a>
+        <a href="https://soundcloud.com/everrealmofficial">Soundcloud</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <p>More information coming soon. Stay tuned for updates!</p>
+  </section>
+
+  <footer>
+    &copy; EverRealm. All rights reserved
+  </footer>
+</body>
+</html>
