@@ -1,1 +1,1 @@
-[#everrealm.net](https://www.everrealm.net/)
+[everrealm.net](https://www.everrealm.net/)
