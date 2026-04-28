@@ -32,13 +32,54 @@ body {
   position: relative;
 }
 
-/* Scale up the 64x64 canvas display */
+/* Wrapper lets us stack the skinmap guide behind the paint canvas */
+#canvasStack {
+  position: relative;
+  width: min(768px, 100%);
+  aspect-ratio: 1 / 1;
+  border: 2px solid #666;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#canvasZoom {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+#canvasStack.panning {
+  cursor: grabbing;
+}
+
+/* Skinmap template shown behind the canvas as a layout guide.
+   Source PNG is 128x128 and so is the canvas now; the skinmap only
+   actually uses the top half, but display the full image for reference. */
+#skinGuide {
+  position: absolute;
+  inset: 0;
+  background-image: url('../images/everrealm_skinmap_v1.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: top left;
+  image-rendering: pixelated;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+#skinGuide.hidden {
+  display: none;
+}
+
+/* Scale up the 128x64 canvas display (8x in each direction) */
 #skinCanvas {
   image-rendering: pixelated;
-  width: 512px;     /* visible size */
-  height: 512px;
-  background: #555;
-  border: 2px solid #666;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
   cursor: crosshair;
 }
 
