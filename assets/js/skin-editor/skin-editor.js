@@ -264,13 +264,17 @@ controls.enablePan = false;
 controls.target.set(0, 5, 0);
 controls.minDistance = 20;
 controls.maxDistance = 500;
+// Left = paint on model, Right = orbit. Wheel still dollies.
+controls.mouseButtons = { LEFT: -1, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE };
 
+let fbxRoot = null;
 const fbxLoader = new FBXLoader();
 fbxLoader.load('models/EverRealmModel_v1.fbx', (fbx) => {
   fbx.traverse((child) => {
     if (child.isMesh) child.material = skinMat;
   });
   scene.add(fbx);
+  fbxRoot = fbx;
 
   const box = new THREE.Box3().setFromObject(fbx);
   const size = box.getSize(new THREE.Vector3());
@@ -283,6 +287,61 @@ fbxLoader.load('models/EverRealmModel_v1.fbx', (fbx) => {
   controls.update();
 }, undefined, (err) => {
   console.error('Failed to load EverRealmModel_v1.fbx:', err);
+});
+
+// ===== 3D PAINTING =====
+const raycaster = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+let painting3D = false;
+
+preview.addEventListener('contextmenu', e => e.preventDefault());
+
+function paintAtPointer3D(e) {
+  if (!fbxRoot) return false;
+  const r = preview.getBoundingClientRect();
+  ndc.x =  ((e.clientX - r.left) / r.width)  * 2 - 1;
+  ndc.y = -((e.clientY - r.top)  / r.height) * 2 + 1;
+  raycaster.setFromCamera(ndc, camera);
+  const hits = raycaster.intersectObject(fbxRoot, true);
+  if (!hits.length || !hits[0].uv) return false;
+  let { x: u, y: v } = hits[0].uv;
+  if (texture.flipY) v = 1 - v;
+  const px = Math.floor(u * canvas.width);
+  const py = Math.floor(v * canvas.height);
+  if (px < 0 || py < 0 || px >= canvas.width || py >= canvas.height) return false;
+
+  if (currentTool === 'picker') {
+    const data = ctx.getImageData(px, py, 1, 1).data;
+    colorPicker.value = rgbToHex(data[0], data[1], data[2]);
+    currentTool = 'brush';
+    document.querySelector('[data-tool="brush"]').classList.add('active');
+    document.querySelector('[data-tool="picker"]').classList.remove('active');
+  } else if (currentTool === 'bucket') {
+    bucketFill(px, py, hexToRgb(colorPicker.value));
+    updateTexture();
+  } else {
+    ctx.fillStyle = colorPicker.value;
+    ctx.fillRect(px, py, 1, 1);
+    updateTexture();
+  }
+  return true;
+}
+
+preview.addEventListener('pointerdown', e => {
+  if (e.button !== 0) return;
+  if (paintAtPointer3D(e)) {
+    painting3D = true;
+    preview.setPointerCapture(e.pointerId);
+  }
+});
+preview.addEventListener('pointermove', e => {
+  if (painting3D && currentTool === 'brush') paintAtPointer3D(e);
+});
+preview.addEventListener('pointerup', e => {
+  if (painting3D) {
+    painting3D = false;
+    if (preview.hasPointerCapture(e.pointerId)) preview.releasePointerCapture(e.pointerId);
+  }
 });
 
 function animate() {
