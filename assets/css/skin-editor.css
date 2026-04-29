@@ -6,6 +6,7 @@ body {
   background: #222;
   color: #eee;
   font-family: sans-serif;
+  user-select: none;
 }
 
 /* Slimmer left panel */
@@ -83,13 +84,76 @@ body {
   cursor: crosshair;
 }
 
+/* Pixel grid overlay on the 2D canvas — sits outside #canvasZoom so the line
+   weight stays at 1 screen pixel regardless of zoom. JS sets background-size
+   and position based on the current zoom/pan. */
+#pixelGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  display: none;
+  background-image:
+    linear-gradient(to right, rgba(0,0,0,0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,0,0,0.35) 1px, transparent 1px);
+  background-position: 0 0;
+}
+
+#pixelGrid.visible {
+  display: block;
+}
+
+/* Brush footprint preview that follows the cursor on the 2D canvas.
+   Positioned in screen pixels by JS so the 1px outline never thickens with zoom. */
+#brushPreview {
+  position: absolute;
+  pointer-events: none;
+  outline: 1px solid #fff;
+  outline-offset: -1px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.6);
+  box-sizing: border-box;
+  mix-blend-mode: difference;
+}
+
+#brushPreview.hidden {
+  display: none;
+}
+
+/* Pixel coords + color readout */
+#hud {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  padding: 2px 6px;
+  background: rgba(0,0,0,0.6);
+  font: 11px/1.2 ui-monospace, Consolas, monospace;
+  color: #ddd;
+  pointer-events: none;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+#hud.hidden {
+  display: none;
+}
+
 /* Better spacing for controls */
 #controls {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 100%;
+}
+
+#colorRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
 }
 
 #controls input[type="color"] {
@@ -101,11 +165,33 @@ body {
   border-radius: 4px;
 }
 
-#toolBar {
+#hexInput {
+  width: 78px;
+  height: 28px;
+  padding: 0 6px;
+  background: #1f1f1f;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font: 13px/1 ui-monospace, Consolas, monospace;
+  text-transform: lowercase;
+  outline: none;
+}
+
+#hexInput:focus {
+  border-color: #888;
+}
+
+#hexInput.invalid {
+  border-color: #c0392b;
+}
+
+#toolBar,
+#viewBar {
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .toolBtn {
@@ -127,6 +213,52 @@ body {
   background: #555;
 }
 
+#brushSizeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+#brushSizeRow input[type="range"] {
+  width: 140px;
+}
+
+#brushSizeLabel {
+  min-width: 1.5em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #eee;
+}
+
+#recentColors {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  max-width: 220px;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #555;
+  border-radius: 3px;
+  cursor: pointer;
+  background-clip: padding-box;
+}
+
+.swatch:hover {
+  border-color: #aaa;
+}
+
+#actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
 
 button {
   background: #444;
@@ -140,6 +272,11 @@ button {
 
 button:hover {
   background: #666;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 canvas {

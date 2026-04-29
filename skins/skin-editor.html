@@ -22,25 +22,49 @@
         <canvas id="skinCanvas" width="128" height="128"></canvas>
         <div id="skinGuide"></div>
       </div>
+      <div id="pixelGrid"></div>
+      <div id="brushPreview" class="hidden"></div>
+      <div id="hud" class="hidden"></div>
     </div>
     <div id="controls">
       <div id="toolBar">
-        <button class="toolBtn" data-tool="brush">🖌️ Brush</button>
-        <button class="toolBtn" data-tool="bucket">🪣 Fill</button>
-        <button class="toolBtn" data-tool="picker">🎯 Pick</button>
-        <button id="toggleGuide" class="toolBtn">👁 Guide</button>
+        <button class="toolBtn active" data-tool="brush" title="Brush (B)">🖌️ Brush</button>
+        <button class="toolBtn" data-tool="eraser" title="Eraser (E)">🩹 Erase</button>
+        <button class="toolBtn" data-tool="bucket" title="Fill (F)">🪣 Fill</button>
+        <button class="toolBtn" data-tool="picker" title="Pick (I)">🎯 Pick</button>
       </div>
-      <input type="color" id="colorPicker" value="#ffffff" />
-      <button id="clearBtn">Clear</button>
-      <button id="saveBtn">Save PNG</button>
-      <input type="file" id="loadInput" accept="image/png" style="display:none">
-      <button id="loadBtn">Load PNG</button>
+      <div id="viewBar">
+        <button id="toggleGuide" class="toolBtn active" title="Guide overlay (G)">👁 Guide</button>
+        <button id="toggleGrid" class="toolBtn" title="Pixel grid (X)"># Grid</button>
+        <button id="toggleMirror" class="toolBtn" title="X-symmetry mirror (M)">⇋ Mirror</button>
+        <button id="resetViewBtn" class="toolBtn" title="Reset zoom/pan (0)">⟲ Reset</button>
+      </div>
+      <label id="brushSizeRow">
+        <span>Size</span>
+        <input type="range" id="brushSize" min="1" max="8" value="1" />
+        <span id="brushSizeLabel">1</span>
+      </label>
+      <div id="colorRow">
+        <input type="color" id="colorPicker" value="#ffffff" />
+        <input type="text" id="hexInput" value="#ffffff" maxlength="7" spellcheck="false" autocomplete="off" />
+        <div id="recentColors"></div>
+      </div>
+      <div id="actionRow">
+        <button id="undoBtn" title="Undo (Ctrl+Z)">↶ Undo</button>
+        <button id="redoBtn" title="Redo (Ctrl+Y)">↷ Redo</button>
+        <button id="clearBtn">Clear</button>
+        <button id="saveBtn" title="Save PNG (Ctrl+S)">Save PNG</button>
+        <input type="file" id="loadInput" accept="image/png" style="display:none">
+        <button id="loadBtn">Load PNG</button>
+      </div>
     </div>
   </div>
 
   <div id="rightPanel">
     <canvas id="preview"></canvas>
   </div>
+
+  <canvas id="displayCanvas" width="1024" height="1024" style="display:none"></canvas>
 
   <script type="module" src="../assets/js/skin-editor/skin-editor.js"></script>
 </body>
