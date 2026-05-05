@@ -821,6 +821,9 @@ const texture = new THREE.CanvasTexture(displayCanvas);
 texture.flipY = true;
 texture.magFilter = THREE.NearestFilter;
 texture.minFilter = THREE.NearestFilter;
+// Canvas pixels are sRGB-encoded; without this the renderer samples them as
+// linear and the linear→sRGB output conversion brightens every color.
+texture.colorSpace = THREE.SRGBColorSpace;
 
 const skinMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
 
